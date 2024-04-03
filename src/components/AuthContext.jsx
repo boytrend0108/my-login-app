@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { accessTokenService } from '../services/accessTokenService.js';
 import { authService } from '../services/authService.js';
+import PropTypes from 'prop-types';
 
 export const AuthContext = React.createContext({});
 
@@ -42,18 +43,21 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   }
 
-  const value = useMemo(() => ({
-    isChecked,
-    user,
-    checkAuth,
-    activate,
-    login,
-    logout,
-  }), [user, isChecked]);
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      isChecked,
+      user,
+      checkAuth,
+      activate,
+      login,
+      logout,
+    }),
+    [user, isChecked]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+AuthProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };
